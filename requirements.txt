@@ -1,6 +1,11 @@
-pytest==8.1.1
-pandas==2.2.3
-sqlalchemy==2.0.36
-jupyter_client==8.6.3
-jupyter_core==5.7.2
-nbstripout==0.8.1
+# python_homework — Python for Data Analysis (v3)
+# Packages for the weeks that run locally in this repo: Weeks 1, 6, and 9.
+# Streamlit Community Cloud installs from this file when you deploy in Week 9.
+# Versions are left unpinned so you get current releases; pin them if a cohort
+# needs reproducibility.
+
+pandas          # Weeks 1 and 9
+plotly          # Week 9 (interactive charts)
+streamlit       # Week 9 (dashboard app)
+selenium        # Week 6 (web scraping)
+webdriver-manager   # Week 6 (browser driver for Selenium)
