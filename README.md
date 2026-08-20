@@ -1,7 +1,5 @@
 # Python for Data Analysis — Homework Repo
 
-# Repository for Code the Dream Python 100 Homework
-
 Before using this repository, you must install Python and must complete the rest of the setup as described in Python Essentials Lesson 1. Several steps are needed to configure VSCode, and you need to have installed the virtualenv pip package.
 
 To use this repository:
