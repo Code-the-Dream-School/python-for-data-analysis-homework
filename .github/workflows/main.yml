@@ -1,0 +1,64 @@
+name: Close PRs opened against this repo
+
+# Students should open pull requests in THEIR OWN copy of python_homework, not
+# against Code the Dream's repository. This workflow politely closes PRs that
+# students open here by mistake, with a comment explaining what to do instead.
+#
+# It uses `pull_request_target` (not `pull_request`) so the workflow's token has
+# write access even when the PR comes from a fork. This is safe because the
+# workflow only calls the GitHub API — it never checks out or runs the PR's code.
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  close-external-pr:
+    runs-on: ubuntu-latest
+
+    # Only act on PRs from people who are NOT maintainers of this repo.
+    # Maintainers (staff) are OWNER / MEMBER / COLLABORATOR and are left alone.
+    if: >
+      github.event.pull_request.author_association != 'OWNER' &&
+      github.event.pull_request.author_association != 'MEMBER' &&
+      github.event.pull_request.author_association != 'COLLABORATOR'
+
+    steps:
+      - name: Comment and close
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const student = pr.user.login;
+            const branch = pr.head.ref;
+
+            const message = [
+              `Hi @${student}, thanks for your work — and welcome! 👋`,
+              ``,
+              `This pull request was opened against **Code the Dream's \`python_homework\` repository**. For this course, you submit each assignment as a pull request **in your own copy** of the repository, not here.`,
+              ``,
+              `**What to do instead:**`,
+              `1. Make sure your \`${branch}\` branch is pushed to *your own* \`python_homework\` repository on GitHub.`,
+              `2. Open a pull request there. When you do, the **base repository** should be **your-username/python_homework**, not \`Code-the-Dream-School/python_homework\`.`,
+              `3. Submit that pull request's link on the assignment form.`,
+              ``,
+              `I'm closing this one automatically so it doesn't get lost. If you think this was a mistake, reach out to your mentor. 🚀`,
+            ].join("\n");
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: message,
+            });
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              state: "closed",
+            });
