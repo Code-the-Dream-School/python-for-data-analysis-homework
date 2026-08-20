@@ -1,2 +1,3 @@
-# python-for-data-analysis-homework
-Homework repository for Code the Dream's Python for Data Analysis class (Python 100, v6).
+# Python for Data Analysis — Homework Repo
+
+To use this repository:
